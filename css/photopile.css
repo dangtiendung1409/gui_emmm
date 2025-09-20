@@ -96,17 +96,24 @@
      padding: 3px 8px;
  }
  
- /* Navigator */
- div#photopile-nav-next,
- div#photopile-nav-prev {
-     opacity: 0;
-     position: absolute;
-     top: 50%;
-     width: 30px;
-     height: 40px;
-     margin-top: -20px;
-     cursor: pointer;
- }
+/* Navigator */
+div#photopile-nav-next,
+div#photopile-nav-prev {
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    width: 30px;
+    height: 40px;
+    margin-top: -20px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
  div#photopile-nav-next {
      right: 0;
      margin-right: -35px;
@@ -129,6 +136,33 @@
      max-width: 700px;
      margin: 70px auto;
  }
- div.photopile-wrapper {
-     margin: 90px auto 150px auto;
- }
+div.photopile-wrapper {
+    margin: 90px auto 150px auto;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    div#photopile-nav-next,
+    div#photopile-nav-prev {
+        width: 40px;
+        height: 50px;
+        margin-top: -25px;
+    }
+    
+    div#photopile-nav-next {
+        margin-right: -45px;
+    }
+    
+    div#photopile-nav-prev {
+        margin-left: -45px;
+    }
+    
+    ul.photopile li {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+    }
+    
+    div#photopile-active-image-container {
+        -webkit-tap-highlight-color: transparent;
+    }
+}

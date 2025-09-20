@@ -146,6 +146,7 @@ function PhotoPile(options){
         bindUIActions : function( thumb ) {
             var self = this;
 
+            // Desktop events
             thumb.bind("mouseover", self.bringToTop);
             thumb.bind("mouseout", self.moveDownOne);
 
@@ -159,6 +160,33 @@ function PhotoPile(options){
                     photo.pickup( $(this) );
                 }
             });
+
+            // Mobile touch events
+            thumb.on('touchstart', function(e) {
+                e.preventDefault();
+                $(this).removeClass('preventClick');
+            });
+
+            thumb.on('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if ($(this).hasClass('preventClick')) {
+                    $(this).removeClass('preventClick');
+                } else {
+                    if ($(this).hasClass(self.active)) return;
+                    photo.pickup( $(this) );
+                }
+            });
+
+            // Fallback for mobile devices that don't support touch events properly
+            if ('ontouchstart' in window) {
+                thumb.on('click', function(e) {
+                    // Prevent double firing on mobile
+                    if (e.originalEvent && e.originalEvent.type === 'touchend') {
+                        return;
+                    }
+                });
+            }
 
             // Prevent user from having to double click thumbnail after dragging.
             thumb.mousedown( function(e) {
@@ -288,6 +316,7 @@ function PhotoPile(options){
                     self.image.fadeTo(config.fadeDuration, '1');
                     self.enlarge();
                     $('body').bind('click', function() { self.putDown(); }); // bind putdown event to body
+                    $('body').bind('touchend', function() { self.putDown(); }); // bind putdown event to body for mobile
                 });
             }
         }, // pickup
@@ -466,6 +495,16 @@ function PhotoPile(options){
                 navigator.pickupNext();
             });
             this.prev.click( function(e) {
+                e.preventDefault();
+                navigator.pickupPrev();
+            });
+
+            // Mobile touch events for navigation
+            this.next.on('touchend', function(e) {
+                e.preventDefault();
+                navigator.pickupNext();
+            });
+            this.prev.on('touchend', function(e) {
                 e.preventDefault();
                 navigator.pickupPrev();
             });
